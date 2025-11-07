@@ -362,6 +362,7 @@
                 
                 <ul class="feature-list">
                     <li><strong>Smart Formatting:</strong> Automatic capitalization with linguistic awareness</li>
+                    <li><strong>Multi-Initial Support:</strong> Proper handling of 3+ letter initials (J.R.R. Tolkien, T.S. Eliot)</li>
                     <li><strong>Locale Support:</strong> French articles vs Italian surnames (d'Aubigny vs D'Amico)</li>
                     <li><strong>Zero Dependencies:</strong> Lightweight TypeScript utility</li>
                     <li><strong>Universal Patterns:</strong> 15+ languages including Spanish, French, Italian, German, Dutch, Scandinavian, Welsh, Polish, Czech, Romanian</li>
@@ -621,10 +622,16 @@ formatName('leonardo da vinci');    // "Leonardo da Vinci"
 // Names with initials
 formatName('j.r.r. tolkien');       // "J.R.R. Tolkien"
 formatName('john f. kennedy');      // "John F. Kennedy"
+formatName('j.r.r tolkien');        // "J.R.R. Tolkien" (adds missing final dot)
+formatName('t.s. eliot');           // "T.S. Eliot"
 
 // Hyphenated names
 formatName('jean-claude van damme'); // "Jean-Claude van Damme"
 formatName('mary-jane watson');      // "Mary-Jane Watson"</pre>
+                </div>
+
+                <div class="tip">
+                    <strong>Tip:</strong> The formatter intelligently recognizes multi-letter initials (3+ letters) like "j.r.r" and automatically adds the missing final dot if needed, ensuring consistent formatting.
                 </div>
             </section>
 

@@ -425,6 +425,9 @@
         // Examples
         const examples = [
             { input: "john f. kennedy", description: "English name with initials" },
+            { input: "j.r.r. tolkien", description: "Multi-initial name" },
+            { input: "j.r.r tolkien", description: "Multi-initial (adds missing dot)" },
+            { input: "t.s. eliot", description: "Name with two initials" },
             { input: "maría de la cruz", description: "Spanish name with particles" },
             { input: "jean-claude d'aubigny", description: "French name with apostrophe" },
             { input: "giovanni d'amico", description: "Italian surname" },
@@ -432,7 +435,6 @@
             { input: "ludwig van beethoven", description: "German name with von" },
             { input: "jan van der waals", description: "Dutch name" },
             { input: "leonardo da vinci", description: "Italian with da" },
-            { input: "j.r.r. tolkien", description: "Name with initials" },
             { input: "gwion ap rhys", description: "Welsh patronymic" },
             { input: "erik af björklund", description: "Swedish noble name" },
             { input: "anders fra bergen", description: "Norwegian location name" },
