@@ -43,13 +43,7 @@ export default defineConfig({
     testTimeout: 10000,
     
     // Reporters
-    reporter: ['verbose'],
-    
-    // Watch options
-    watch: {
-      // Don't watch node_modules
-      ignored: ['**/node_modules/**', '**/dist/**']
-    }
+    reporters: ['verbose']
   },
   
   // Resolve configuration for tests
