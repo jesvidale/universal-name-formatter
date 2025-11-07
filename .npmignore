@@ -1,0 +1,39 @@
+# Source files
+src/
+tests/
+
+# Build configuration
+*.config.ts
+*.config.js
+tsconfig*.json
+vitest.config.ts
+vite.config.ts
+
+# CI/CD
+.github/
+.releaserc.json
+
+# Development
+.vscode/
+.idea/
+*.log
+npm-debug.log*
+
+# Tests
+coverage/
+.nyc_output/
+**/__tests__/
+*.test.ts
+*.spec.ts
+
+# Documentation (keep only README, CHANGELOG, LICENSE)
+docs/
+examples/
+tutorial.html
+demo.html
+
+# Misc
+.DS_Store
+.env
+.env.local
+sonar-project.properties

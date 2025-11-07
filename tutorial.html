@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Name Formatter - Tutorial</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .tutorial-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-link.demo {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .nav-link.demo:hover {
+            box-shadow: 0 10px 20px rgba(245, 87, 108, 0.3);
+        }
+
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section h2 {
+            color: #333;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .section h3 {
+            color: #444;
+            font-size: 1.4rem;
+            margin: 30px 0 15px;
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .section h3::before {
+            content: "📌";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+        }
+
+        .section p {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Monaco', 'Consolas', monospace;
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            margin: 0;
+            color: #333;
+        }
+
+        .code-inline {
+            background: #e9ecef;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 0.9em;
+            color: #d63384;
+        }
+
+        .example-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .example-card {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .example-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .example-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .example-input {
+            font-family: 'Monaco', 'Consolas', monospace;
+            color: #6f42c1;
+            margin-bottom: 5px;
+        }
+
+        .example-output {
+            font-family: 'Monaco', 'Consolas', monospace;
+            color: #198754;
+            font-weight: 600;
+        }
+
+        .locale-comparison {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .locale-comparison h4 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+
+        .comparison-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #ffeaa7;
+        }
+
+        .comparison-row:last-child {
+            border-bottom: none;
+        }
+
+        .comparison-locale {
+            font-weight: 600;
+            color: #856404;
+            min-width: 100px;
+        }
+
+        .comparison-result {
+            font-family: 'Monaco', 'Consolas', monospace;
+            color: #198754;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #e9ecef;
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-list li::before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+            top: 10px;
+        }
+
+        .install-steps {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .install-steps h4 {
+            color: #0c5460;
+            margin-bottom: 15px;
+        }
+
+        .step {
+            margin: 15px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .step::before {
+            content: attr(data-step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: #667eea;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 0.8rem;
+            line-height: 20px;
+            font-weight: 600;
+        }
+
+        .warning {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .warning::before {
+            content: "⚠️ ";
+            font-weight: bold;
+        }
+
+        .tip {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #155724;
+        }
+
+        .tip::before {
+            content: "💡 ";
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .tutorial-container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+
+            .header {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 2.2rem;
+            }
+
+            .content {
+                padding: 30px 20px;
+            }
+
+            .example-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="tutorial-container">
+        <div class="header">
+            <h1>🌍 Universal Name Formatter</h1>
+            <p>Complete guide to formatting international names with proper linguistic rules and locale-specific handling</p>
+        </div>
+
+        <div class="content">
+            <div class="nav-links">
+                <a href="#installation" class="nav-link">📦 Installation</a>
+                <a href="#supported-languages" class="nav-link">🌐 Languages</a>
+                <a href="#basic-usage" class="nav-link">🚀 Basic Usage</a>
+                <a href="#advanced" class="nav-link">⚡ Advanced</a>
+                <a href="demo.html" class="nav-link demo">🎯 Live Demo</a>
+            </div>
+
+            <section id="overview" class="section">
+                <h2>📋 Overview</h2>
+                <p>Universal Name Formatter intelligently formats international names with proper linguistic rules. Handles apostrophes, particles, and locale-specific patterns automatically.</p>
+                
+                <ul class="feature-list">
+                    <li><strong>Smart Formatting:</strong> Automatic capitalization with linguistic awareness</li>
+                    <li><strong>Locale Support:</strong> French articles vs Italian surnames (d'Aubigny vs D'Amico)</li>
+                    <li><strong>Zero Dependencies:</strong> Lightweight TypeScript utility</li>
+                    <li><strong>Universal Patterns:</strong> 15+ languages including Spanish, French, Italian, German, Dutch, Scandinavian, Welsh, Polish, Czech, Romanian</li>
+                </ul>
+            </section>
+
+            <section id="supported-languages" class="section">
+                <h2>🌐 Supported Languages</h2>
+                <p>The formatter includes comprehensive linguistic rules for multiple language families and regional variations:</p>
+                
+                <div class="example-grid">
+                    <div class="example-card">
+                        <h4>🇬🇧 English</h4>
+                        <div style="font-size: 0.9rem; color: #666;">
+                            Prepositions: of<br>
+                            Conjunctions: and<br>
+                            Initials: J.R.R., Ph.D., Jr.<br>
+                            <strong>Examples:</strong> John F. Kennedy, J.R.R. Tolkien
+                        </div>
+                    </div>
+                    <div class="example-card">
+                        <h4>🇪🇸 Spanish</h4>
+                        <div style="font-size: 0.9rem; color: #666;">
+                            Articles: el, la, los, las<br>
+                            Prepositions: de, del, de la, de los, de las<br>
+                            Conjunctions: y, e
+                        </div>
+                    </div>
+                    <div class="example-card">
+                        <h4>🇫🇷 French</h4>
+                        <div style="font-size: 0.9rem; color: #666;">
+                            Articles: le, les<br>
+                            Prepositions: du, des<br>
+                            Conjunctions: et<br>
+                            <strong>Special:</strong> d'Aubigny patterns
+                        </div>
+                    </div>
+                    <div class="example-card">
+                        <h4>🇮🇹 Italian</h4>
+                        <div style="font-size: 0.9rem; color: #666;">
+                            Articles: il, lo, gli, le<br>
+                            Prepositions: di, della, dello, degli, delle<br>
+                            Conjunctions: e, i<br>
+                            <strong>Special:</strong> D'Amico patterns
+                        </div>
+                    </div>
+                    <div class="example-card">
+                        <h4>🇩🇪 German</h4>
+                        <div style="font-size: 0.9rem; color: #666;">
+                            Articles: der, die, das<br>
+                            Prepositions: von, von der, zu, zur, zum<br>
+                            Conjunctions: und
+                        </div>
+                    </div>
+                    <div class="example-card">
+                        <h4>🇳🇱 Dutch</h4>
+                        <div style="font-size: 0.9rem; color: #666;">
+                            Articles: de, het<br>
+                            Prepositions: van, van der, der, den<br>
+                            Conjunctions: en
+                        </div>
+                    </div>
+                    <div class="example-card">
+                        <h4>🇮🇪 Irish/Scottish</h4>
+                        <div style="font-size: 0.9rem; color: #666;">
+                            Prefixes: O', Mc, Mac<br>
+                            <strong>Examples:</strong> O'Malley, McDonald
+                        </div>
+                    </div>
+                    <div class="example-card">
+                        <h4>🇵🇹 Portuguese</h4>
+                        <div style="font-size: 0.9rem; color: #666;">
+                            Prepositions: da, do, dos, das<br>
+                            Conjunctions: e
+                        </div>
+                    </div>
+                    <div class="example-card">
+                        <h4>🇸🇪 Swedish</h4>
+                        <div style="font-size: 0.9rem; color: #666;">
+                            Articles: en, ett<br>
+                            Prepositions: af, av, till, från<br>
+                            Conjunctions: och<br>
+                            <strong>Examples:</strong> Erik af Ugglas
+                        </div>
+                    </div>
+                    <div class="example-card">
+                        <h4>🇳🇴 Norwegian</h4>
+                        <div style="font-size: 0.9rem; color: #666;">
+                            Articles: en, et<br>
+                            Prepositions: af, av, fra<br>
+                            Conjunctions: og<br>
+                            <strong>Examples:</strong> Ole av Bergen
+                        </div>
+                    </div>
+                    <div class="example-card">
+                        <h4>🇩🇰 Danish</h4>
+                        <div style="font-size: 0.9rem; color: #666;">
+                            Articles: en, et<br>
+                            Prepositions: af, av, fra<br>
+                            Conjunctions: og<br>
+                            <strong>Similar to Norwegian</strong>
+                        </div>
+                    </div>
+                    <div class="example-card">
+                        <h4>🏴󠁧󠁢󠁷󠁬󠁳󠁿 Welsh</h4>
+                        <div style="font-size: 0.9rem; color: #666;">
+                            Patronymics: ap, ab, ferch<br>
+                            Prepositions: o<br>
+                            <strong>Examples:</strong> David ap Rhys, Megan ferch Owen
+                        </div>
+                    </div>
+                    <div class="example-card">
+                        <h4>🇵🇱 Polish</h4>
+                        <div style="font-size: 0.9rem; color: #666;">
+                            Prepositions: z, ze, w, na, od, do, u<br>
+                            Conjunctions: a, i<br>
+                            <strong>Examples:</strong> Jan z Warszawy
+                        </div>
+                    </div>
+                    <div class="example-card">
+                        <h4>🇨🇿 Czech</h4>
+                        <div style="font-size: 0.9rem; color: #666;">
+                            Prepositions: z, ze, na, v, od, do, u<br>
+                            Conjunctions: a, i<br>
+                            <strong>Examples:</strong> Petr z Prahy
+                        </div>
+                    </div>
+                    <div class="example-card">
+                        <h4>🇷🇴 Romanian</h4>
+                        <div style="font-size: 0.9rem; color: #666;">
+                            Prepositions: de, din, către, spre<br>
+                            Conjunctions: și<br>
+                            <strong>Examples:</strong> Ion din București
+                        </div>
+                    </div>
+                    <div class="example-card">
+                        <h4>Regional Variants</h4>
+                        <div style="font-size: 0.9rem; color: #666;">
+                            <strong>Catalan:</strong> els, les, dels, de les<br>
+                            <strong>Galician:</strong> o, a, os, as<br>
+                            <strong>Basque:</strong> eta<br>
+                            <strong>Nordic:</strong> af, av
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Locale-Specific Intelligence</h3>
+                <p>The formatter provides special handling for these locale codes:</p>
+                
+                <div class="locale-comparison">
+                    <h4>Supported Locale Codes</h4>
+                    <div class="comparison-row">
+                        <span class="comparison-locale"><strong>fr</strong> (French):</span>
+                        <span class="comparison-result">Keeps articles lowercase in d'Aubigny patterns</span>
+                    </div>
+                    <div class="comparison-row">
+                        <span class="comparison-locale"><strong>it</strong> (Italian):</span>
+                        <span class="comparison-result">Capitalizes surnames in D'Amico patterns</span>
+                    </div>
+                    <div class="comparison-row">
+                        <span class="comparison-locale"><strong>es</strong> (Spanish):</span>
+                        <span class="comparison-result">Spanish particle and conjunction rules</span>
+                    </div>
+                    <div class="comparison-row">
+                        <span class="comparison-locale"><strong>sv, no, da</strong> (Scandinavian):</span>
+                        <span class="comparison-result">Nordic particle patterns (af, av, till, från)</span>
+                    </div>
+                    <div class="comparison-row">
+                        <span class="comparison-locale"><strong>cy</strong> (Welsh):</span>
+                        <span class="comparison-result">Patronymic patterns (ap, ab, ferch)</span>
+                    </div>
+                    <div class="comparison-row">
+                        <span class="comparison-locale"><strong>pl, cs</strong> (Polish, Czech):</span>
+                        <span class="comparison-result">Slavic prepositions (z, ze, w, na, od)</span>
+                    </div>
+                    <div class="comparison-row">
+                        <span class="comparison-locale"><strong>ro</strong> (Romanian):</span>
+                        <span class="comparison-result">Romance language particles (din, către)</span>
+                    </div>
+                    <div class="comparison-row">
+                        <span class="comparison-locale"><strong>de, nl, en</strong>:</span>
+                        <span class="comparison-result">Germanic language patterns (von, van, etc.)</span>
+                    </div>
+                </div>
+
+                <div class="tip">
+                    <strong>Universal Support:</strong> Even without specifying a locale, the formatter automatically recognizes and properly formats names from all supported languages using linguistic pattern detection.
+                </div>
+            </section>
+
+            <section id="installation" class="section">
+                <h2>📦 Installation & Setup</h2>
+                
+                <div class="install-steps">
+                    <h4>Quick Installation</h4>
+                    <div class="step" data-step="1">
+                        <strong>Install the package:</strong>
+                        <div class="code-block">
+                            <pre>npm install universal-name-formatter</pre>
+                        </div>
+                    </div>
+                    <div class="step" data-step="2">
+                        <strong>Import in your project:</strong>
+                        <div class="code-block">
+                            <pre>import { formatName } from 'universal-name-formatter';</pre>
+                        </div>
+                    </div>
+                    <div class="step" data-step="3">
+                        <strong>Start formatting names:</strong>
+                        <div class="code-block">
+                            <pre>const formatted = formatName('josé maría de la cruz');
+console.log(formatted); // "José María de la Cruz"</pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="basic-usage" class="section">
+                <h2>🚀 Basic Usage</h2>
+                
+                <h3>Simple Name Formatting</h3>
+                <p>The formatter works great without any configuration. It automatically applies universal linguistic rules:</p>
+                
+                <div class="example-grid">
+                    <div class="example-card">
+                        <h4>Spanish Names</h4>
+                        <div class="example-input">formatName('josé maría de la cruz')</div>
+                        <div class="example-output">→ "José María de la Cruz"</div>
+                    </div>
+                    <div class="example-card">
+                        <h4>French Names</h4>
+                        <div class="example-input">formatName('jean-claude de la fontaine')</div>
+                        <div class="example-output">→ "Jean-Claude de la Fontaine"</div>
+                    </div>
+                    <div class="example-card">
+                        <h4>German Names</h4>
+                        <div class="example-input">formatName('ludwig van beethoven')</div>
+                        <div class="example-output">→ "Ludwig van Beethoven"</div>
+                    </div>
+                    <div class="example-card">
+                        <h4>Irish Names</h4>
+                        <div class="example-input">formatName('patrick o\'malley')</div>
+                        <div class="example-output">→ "Patrick O'Malley"</div>
+                    </div>
+                </div>
+
+                <h3>Supported Name Patterns</h3>
+                <p>The formatter recognizes and properly handles various linguistic patterns:</p>
+                
+                <div class="code-block">
+                    <pre>// Particles and prepositions
+formatName('maria del carmen');     // "Maria del Carmen"
+formatName('hans von neumann');     // "Hans von Neumann"
+formatName('jan van der waals');    // "Jan van der Waals"
+formatName('leonardo da vinci');    // "Leonardo da Vinci"
+
+// Names with initials
+formatName('j.r.r. tolkien');       // "J.R.R. Tolkien"
+formatName('john f. kennedy');      // "John F. Kennedy"
+
+// Hyphenated names
+formatName('jean-claude van damme'); // "Jean-Claude van Damme"
+formatName('mary-jane watson');      // "Mary-Jane Watson"</pre>
+                </div>
+            </section>
+
+            <section id="advanced" class="section">
+                <h2>⚡ Advanced Features</h2>
+                
+                <h3>Locale-Specific Formatting</h3>
+                <p>The most powerful feature is locale-aware apostrophe handling. The same name can be formatted differently based on linguistic context:</p>
+                
+                <div class="locale-comparison">
+                    <h4>Example: "marie d'aubigny" vs "giovanni d'amico"</h4>
+                    <div class="comparison-row">
+                        <span class="comparison-locale">French (fr):</span>
+                        <span class="comparison-result">Marie d'Aubigny (article stays lowercase)</span>
+                    </div>
+                    <div class="comparison-row">
+                        <span class="comparison-locale">Italian (it):</span>
+                        <span class="comparison-result">Giovanni D'Amico (surname capitalized)</span>
+                    </div>
+                    <div class="comparison-row">
+                        <span class="comparison-locale">Default:</span>
+                        <span class="comparison-result">Smart detection based on name patterns</span>
+                    </div>
+                </div>
+
+                <h3>Using Locale Options</h3>
+                <div class="code-block">
+                    <pre>// French locale - keeps articles lowercase
+formatName('marie d\'aubigny', { locale: 'fr' });
+// → "Marie d'Aubigny"
+
+// Italian locale - capitalizes surnames  
+formatName('giovanni d\'amico', { locale: 'it' });
+// → "Giovanni D'Amico"
+
+// Works with full locale codes
+formatName('carlos d\'angelo', { locale: 'es-ES' });
+// → "Carlos D'Angelo"
+
+// Auto-detection for unknown names
+formatName('giovanni d\'amico'); // → "Giovanni D'Amico"
+formatName('marie d\'aubigny');  // → "Marie d'Aubigny"</pre>
+                </div>
+
+                <h3>Additional Options</h3>
+                <p>The formatter includes useful options for text processing:</p>
+                
+                <div class="code-block">
+                    <pre>// Trim whitespace (default: true)
+formatName('  josé maría  ', { trim: true });
+// → "José María"
+
+// Normalize multiple spaces (default: true)
+formatName('josé   maría   de    la    cruz', { normalizeSpaces: true });
+// → "José María de la Cruz"
+
+// Disable trimming to preserve spaces
+formatName('  josé maría  ', { trim: false });
+// → "  José María  "
+
+// Combine options with locale
+formatName('  marie d\'aubigny  ', { 
+    locale: 'fr', 
+    trim: true, 
+    normalizeSpaces: true 
+});
+// → "Marie d'Aubigny"</pre>
+                </div>
+
+                <h3>Pattern Recognition</h3>
+                <p>Get information about supported name patterns:</p>
+                
+                <div class="code-block">
+                    <pre>import { getSupportedNamePatterns } from 'universal-name-formatter';
+
+const patterns = getSupportedNamePatterns();
+console.log(patterns);
+// Returns examples of all supported linguistic patterns</pre>
+                </div>
+            </section>
+
+            <section id="real-world" class="section">
+                <h2>🌟 Quick Examples</h2>
+                
+                <h3>Form Input Formatting</h3>
+                <div class="code-block">
+                    <pre>// Auto-format user input
+document.getElementById('nameInput').addEventListener('blur', (e) => {
+    e.target.value = formatName(e.target.value, { locale: 'fr' });
+});</pre>
+                </div>
+
+                <h3>Data Processing</h3>
+                <div class="code-block">
+                    <pre>// Clean names in bulk
+const formatted = contacts.map(contact => ({
+    ...contact,
+    name: formatName(contact.name, { trim: true })
+}));</pre>
+                </div>
+            </section>
+
+            <section id="best-practices" class="section">
+                <h2>💎 Tips</h2>
+                
+                <div class="tip">
+                    <strong>Tip:</strong> Provide locale for apostrophe names: <code>formatName('marie d\'aubigny', { locale: 'fr' })</code>
+                </div>
+
+                <div class="warning">
+                    <strong>Note:</strong> Designed for Western scripts (Latin alphabet). Non-Latin scripts may need additional processing.
+                </div>
+
+                <h3>Quick Locale Detection</h3>
+                <div class="code-block">
+                    <pre>// Use browser locale or fallback
+const locale = navigator.language || 'en';
+const formatted = formatName(name, { locale });</pre>
+                </div>
+            </section>
+
+            <section id="try-it" class="section">
+                <h2>🎯 Try It Yourself</h2>
+                <p>Ready to see the formatter in action? Try our interactive demo where you can test any name with different locale settings and see real-time results.</p>
+                
+                <div style="text-align: center; margin: 30px 0;">
+                    <a href="demo.html" class="nav-link demo" style="font-size: 1.2rem; padding: 15px 30px;">
+                        🚀 Launch Interactive Demo
+                    </a>
+                </div>
+
+                <p style="text-align: center; color: #666; font-style: italic;">
+                    Test with names like "maría de la cruz", "jean-claude d'aubigny", or "patrick o'malley"
+                </p>
+            </section>
+        </div>
+    </div>
+</body>
+</html>
