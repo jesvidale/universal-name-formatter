@@ -13,15 +13,25 @@ export default defineConfig({
     // Coverage configuration
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'json', 'html', 'lcov'],
+      reporter: ['text', 'json', 'html', 'lcov', 'text-summary'],
+      reportsDirectory: './coverage',
       exclude: [
         'node_modules/',
         'dist/',
-        'tests/',
+        'build/',
+        'coverage/',
         '**/*.d.ts',
         '**/*.config.*',
-        '**/coverage/**'
+        '**/__tests__/**',
+        '**/tests/**',
+        '**/setupTests.ts',
+        '**/reportWebVitals.js',
+        '**/demo.html',
+        '**/tutorial.html',
+        '**/index.html'
       ],
+      include: ['src/**/*.{ts,tsx}'],
+      all: true,
       thresholds: {
         global: {
           branches: 75,

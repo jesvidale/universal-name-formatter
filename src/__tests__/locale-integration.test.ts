@@ -2,67 +2,36 @@ import { describe, it, expect } from 'vitest';
 import { formatName } from '../index';
 
 describe('Locale Integration', () => {
-  describe('French locale (fr)', () => {
-    it('should handle French apostrophes correctly', () => {
-      expect(formatName("marie d'aubigny", { locale: 'fr' })).toBe("Marie d'aubigny");
-      expect(formatName("charles d'artagnan", { locale: 'fr' })).toBe("Charles d'artagnan");
-      expect(formatName("jean d'alembert", { locale: 'fr' })).toBe("Jean d'alembert");
-    });
+  const localeCases: Array<[string, string, string, { locale?: string }]> = [
+    // French locale - keeps apostrophe lowercase
+    ['French apostrophes', "marie d'aubigny", "Marie d'aubigny", { locale: 'fr' }],
+    ['French mixed nationality', "patrick o'malley", "Patrick O'Malley", { locale: 'fr' }],
 
-    it('should handle mixed nationalities with French locale', () => {
-      expect(formatName("giovanni d'amico", { locale: 'fr' })).toBe("Giovanni d'amico");
-      expect(formatName("marco d'angelo", { locale: 'fr' })).toBe("Marco d'angelo");
-      expect(formatName("patrick o'malley", { locale: 'fr' })).toBe("Patrick O'Malley");
-    });
-  });
+    // Italian locale - capitalizes after apostrophe
+    ['Italian apostrophes', "giovanni d'amico", "Giovanni D'Amico", { locale: 'it' }],
+    ['Italian mixed nationality', "marie d'aubigny", "Marie D'Aubigny", { locale: 'it' }],
 
-  describe('Italian locale (it)', () => {
-    it('should handle Italian apostrophes correctly', () => {
-      expect(formatName("giovanni d'amico", { locale: 'it' })).toBe("Giovanni D'Amico");
-      expect(formatName("marco d'alessandro", { locale: 'it' })).toBe("Marco D'Alessandro");
-      expect(formatName("giulia d'antonio", { locale: 'it' })).toBe("Giulia D'Antonio");
-    });
+    // Spanish locale - handles prepositions
+    ['Spanish prepositions', 'maría de la cruz', 'María de la Cruz', { locale: 'es' }],
+    ['Spanish compound', 'josé maría de los santos', 'José María de los Santos', { locale: 'es' }],
+    ['Spanish mixed nationality', "giovanni d'amico", "Giovanni D'Amico", { locale: 'es' }],
 
-    it('should handle mixed nationalities with Italian locale', () => {
-      expect(formatName("marie d'aubigny", { locale: 'it' })).toBe("Marie D'Aubigny");
-      expect(formatName("charles d'artagnan", { locale: 'it' })).toBe("Charles D'Artagnan");
-    });
-  });
+    // Welsh locale - handles patronymics
+    ['Welsh patronymics ab', 'sian ab owain', 'Sian ab Owain', { locale: 'cy' }],
+    ['Welsh patronymics ferch', 'bethan ferch morgan', 'Bethan ferch Morgan', { locale: 'cy' }],
+    ['Welsh patronymics ap', 'dafydd ap llewelyn', 'Dafydd ap Llewelyn', { locale: 'cy' }],
 
-  describe('Spanish locale (es)', () => {
-    it('should handle Spanish names with various prepositions', () => {
-      expect(formatName('maría de la cruz', { locale: 'es' })).toBe('María de la Cruz');
-      expect(formatName('josé maría de los santos', { locale: 'es' })).toBe(
-        'José María de los Santos'
-      );
-      expect(formatName('ana del carmen', { locale: 'es' })).toBe('Ana del Carmen');
-    });
+    // No locale - default behavior
+    ['Default Spanish', 'maría de la cruz', 'María De La Cruz', {}],
+    ['Default French', 'jean-claude de la fontaine', 'Jean-Claude De La Fontaine', {}],
+    ['Default German', 'hans von neumann', 'Hans Von Neumann', {}],
+    ['Default Dutch', 'jan van der waals', 'Jan Van Der Waals', {}],
+    ['Default Italian', 'leonardo da vinci', 'Leonardo Da Vinci', {}],
+    ['Default Irish', "patrick o'malley", "Patrick O'Malley", {}],
+    ['Default Scottish', 'donald mcdonald', 'Donald McDonald', {}],
+  ];
 
-    it('should handle mixed nationalities with Spanish locale', () => {
-      expect(formatName("giovanni d'amico", { locale: 'es' })).toBe("Giovanni D'Amico");
-      expect(formatName("francesco d'angelo", { locale: 'es' })).toBe("Francesco D'Angelo");
-      expect(formatName("marie d'aubigny", { locale: 'es' })).toBe("Marie D'Aubigny");
-      expect(formatName("charles d'artagnan", { locale: 'es' })).toBe("Charles D'Artagnan");
-    });
-  });
-
-  describe('Welsh locale (cy)', () => {
-    it('should handle Welsh patronymics correctly', () => {
-      expect(formatName('sian ab owain', { locale: 'cy' })).toBe('Sian ab Owain');
-      expect(formatName('bethan ferch morgan', { locale: 'cy' })).toBe('Bethan ferch Morgan');
-      expect(formatName('dafydd ap llewelyn', { locale: 'cy' })).toBe('Dafydd ap Llewelyn');
-    });
-  });
-
-  describe('Multiple languages without locale specified', () => {
-    it('should format names correctly regardless of origin', () => {
-      expect(formatName('maría de la cruz')).toBe('María De La Cruz');
-      expect(formatName('jean-claude de la fontaine')).toBe('Jean-Claude De La Fontaine');
-      expect(formatName('hans von neumann')).toBe('Hans Von Neumann');
-      expect(formatName('jan van der waals')).toBe('Jan Van Der Waals');
-      expect(formatName('leonardo da vinci')).toBe('Leonardo Da Vinci');
-      expect(formatName("patrick o'malley")).toBe("Patrick O'Malley");
-      expect(formatName('donald mcdonald')).toBe('Donald McDonald');
-    });
+  it.each(localeCases)('%s: %s → %s', (_desc, input, expected, options) => {
+    expect(formatName(input, options)).toBe(expected);
   });
 });

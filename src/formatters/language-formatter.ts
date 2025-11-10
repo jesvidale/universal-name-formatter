@@ -21,13 +21,24 @@ export function formatWithLocaleRules(
 
   let processedName = name;
 
-  // Preserve spaces handling
-  const leadingSpaces = !trim ? (name.match(/^\s*/) || [''])[0] : '';
-  const trailingSpaces = !trim ? (name.match(/\s*$/) || [''])[0] : '';
+  // Preserve spaces handling using RegExp.exec()
+  const leadingMatch = /^\s*/.exec(name);
+  const trailingMatch = /\s*$/.exec(name);
+
+  let leadingSpaces = '';
+  if (!trim && leadingMatch) {
+    leadingSpaces = leadingMatch[0];
+  }
+
+  let trailingSpaces = '';
+  if (!trim && trailingMatch) {
+    trailingSpaces = trailingMatch[0];
+  }
 
   // Basic cleaning
-  processedName = trim ? processedName.trim() : processedName.trim();
+  processedName = processedName.trim();
   if (normalizeSpaces) {
+    // Replace all multiple spaces with single space (regex with /g flag)
     processedName = processedName.replace(/\s+/g, ' ');
   }
 

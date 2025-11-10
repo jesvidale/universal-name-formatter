@@ -3,32 +3,37 @@ import { formatName } from '../index';
 
 describe('Public API', () => {
   describe('formatName', () => {
-    it('should format basic names correctly', () => {
-      expect(formatName('john f. kennedy')).toBe('John F. Kennedy');
-      expect(formatName('mary smith ph.d.')).toBe('Mary Smith Ph.D.');
-      expect(formatName('robert jones jr.')).toBe('Robert Jones Jr.');
+    const basicCases: Array<[string, string, string]> = [
+      ['JFK', 'john f. kennedy', 'John F. Kennedy'],
+      ['Ph.D.', 'mary smith ph.d.', 'Mary Smith Ph.D.'],
+      ['Jr.', 'robert jones jr.', 'Robert Jones Jr.'],
+      ['Empty', '', ''],
+      ['Spaces only', '   ', ''],
+      ['Single word', 'josé', 'José'],
+      ['Normalize spaces 1', 'josé   maría   de    la    cruz', 'José María De La Cruz'],
+      ['Normalize spaces 2', '  maría  del  carmen  ', 'María Del Carmen'],
+    ];
+
+    it.each(basicCases)('%s: %s → %s', (_desc, input, expected) => {
+      expect(formatName(input)).toBe(expected);
     });
 
-    it('should handle empty and invalid inputs', () => {
-      expect(formatName('')).toBe('');
-      expect(formatName('   ')).toBe('');
-      expect(formatName('josé')).toBe('José');
-    });
-
-    it('should respect formatting options', () => {
+    it('should respect trim option', () => {
       expect(formatName('  josé maría  ', { trim: false })).toBe('  José María  ');
+    });
+
+    it('should respect normalizeSpaces option', () => {
       expect(formatName('josé  maría', { normalizeSpaces: false })).toBe('José  María');
     });
 
-    it('should normalize spaces by default', () => {
-      expect(formatName('josé   maría   de    la    cruz')).toBe('José María De La Cruz');
-      expect(formatName('  maría  del  carmen  ')).toBe('María Del Carmen');
-    });
+    const localeCases: Array<[string, string, { locale: string }, string]> = [
+      ['French', "marie d'aubigny", { locale: 'fr' }, "Marie d'aubigny"],
+      ['Italian', "giovanni d'amico", { locale: 'it' }, "Giovanni D'Amico"],
+      ['Irish', "patrick o'malley", { locale: 'ga' }, "Patrick O'Malley"],
+    ];
 
-    it('should handle locale-specific formatting', () => {
-      expect(formatName("marie d'aubigny", { locale: 'fr' })).toBe("Marie d'aubigny");
-      expect(formatName("giovanni d'amico", { locale: 'it' })).toBe("Giovanni D'Amico");
-      expect(formatName("patrick o'malley", { locale: 'ga' })).toBe("Patrick O'Malley");
+    it.each(localeCases)('%s locale: %s → %s', (_desc, input, options, expected) => {
+      expect(formatName(input, options)).toBe(expected);
     });
   });
 });
