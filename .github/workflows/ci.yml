@@ -7,10 +7,12 @@ on:
     branches: [ main, develop ]
     types: [ opened, synchronize, reopened ]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
-    # Skip if it's a push event on a branch that also has a PR open
-    if: github.event_name != 'push' || github.event.pull_request == null
     runs-on: ubuntu-latest
     strategy:
       matrix:
