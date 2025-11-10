@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/jesvidale/universal-name-formatter/compare/v1.0.1...v1.0.2) (2025-11-10)
+
+
+### Performance Improvements
+
+* reduce npm package from 169KB to 34.5KB (78% smaller) ([cdbe235](https://github.com/jesvidale/universal-name-formatter/commit/cdbe235af3f83a9da7dfc0debd74807a07eafb02))
+
 ## [1.0.1](https://github.com/jesvidale/universal-name-formatter/compare/v1.0.0...v1.0.1) (2025-11-10)
 
 
