@@ -3,6 +3,12 @@ import { resolve } from 'path';
 import dts from 'vite-plugin-dts';
 
 export default defineConfig({
+  esbuild: {
+    // Remove all comments from output
+    legalComments: 'none',
+    // Drop console statements in production
+    drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [],
+  },
   plugins: [
     dts({
       include: ['src/**/*'],
@@ -24,14 +30,12 @@ export default defineConfig({
             return 'index.esm.js';
           case 'cjs':
             return 'index.js';
-          case 'umd':
-            return 'index.umd.js';
           default:
             return `index.${format}.js`;
         }
       },
-      // Output formats
-      formats: ['es', 'cjs', 'umd'],
+      // Output formats (ESM for modern, CJS for legacy systems)
+      formats: ['es', 'cjs'],
     },
     rollupOptions: {
       // Externalize dependencies that shouldn't be bundled
@@ -41,15 +45,17 @@ export default defineConfig({
         globals: {},
         // Preserve module structure for better tree-shaking
         preserveModules: false,
+        // Compress output
+        compact: true,
       },
     },
-    // Generate source maps
-    sourcemap: true,
+    // Generate source maps only for development
+    sourcemap: process.env.NODE_ENV === 'development',
     // Clean dist folder before build
     emptyOutDir: true,
-    // Target modern browsers
-    target: 'es2020',
-    // Minification
+    // Target modern browsers for smaller output
+    target: 'es2022',
+    // Aggressive minification settings
     minify: 'esbuild',
   },
   // Resolve configuration
