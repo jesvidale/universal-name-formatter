@@ -1,3 +1,13 @@
+# 1.0.0 (2025-11-10)
+
+
+### Bug Fixes
+
+* add workflow permissions and fix vitest config for semantic-release ([08d5c21](https://github.com/jesvidale/universal-name-formatter/commit/08d5c21ff1729955eadd73cde0062304416399fc))
+* correct vitest config - use reporters instead of reporter ([a36f445](https://github.com/jesvidale/universal-name-formatter/commit/a36f4450619c9c9ba47703f6175c9d5095f1704d))
+* optimize workflows to prevent duplicate runs and add permissions ([e291ae6](https://github.com/jesvidale/universal-name-formatter/commit/e291ae6a0939f0cd9309f7cd1b295594c16c3138))
+* update Node.js version to 22.x for semantic-release compatibility ([9095e5f](https://github.com/jesvidale/universal-name-formatter/commit/9095e5f9b2f26bff33e0a38d2f093776e3c4da37))
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
