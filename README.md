@@ -221,16 +221,6 @@ const formatted: string = formatName('marie d\'aubigny', options);
 
 MIT License - see [LICENSE](LICENSE) file for details.
 
-## Author
-
-**Jesus Vidal Alejandre** (jesvidale)  
-📧 Email: jesvidale@gmail.com  
-🐙 GitHub: [@jesvidale](https://github.com/jesvidale)  
-
-## Copyright
-
-Copyright © 2025 Jesus Vidal Alejandre (jesvidale). All rights reserved.
-
 ## Support
 
 For questions and support, please open an issue on [GitHub](https://github.com/jesvidale/universal-name-formatter/issues).
