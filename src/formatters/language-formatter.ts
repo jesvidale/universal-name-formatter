@@ -24,8 +24,16 @@ export function formatWithLocaleRules(
   // Preserve spaces handling using RegExp.exec()
   const leadingMatch = /^\s*/.exec(name);
   const trailingMatch = /\s*$/.exec(name);
-  const leadingSpaces = trim ? '' : leadingMatch ? leadingMatch[0] : '';
-  const trailingSpaces = trim ? '' : trailingMatch ? trailingMatch[0] : '';
+  
+  let leadingSpaces = '';
+  if (!trim && leadingMatch) {
+    leadingSpaces = leadingMatch[0];
+  }
+  
+  let trailingSpaces = '';
+  if (!trim && trailingMatch) {
+    trailingSpaces = trailingMatch[0];
+  }
 
   // Basic cleaning
   processedName = processedName.trim();
