@@ -3,143 +3,57 @@ import { capitalizeFirst, normalizeSpaces, preserveSpaces } from '../text-utils'
 
 describe('text-utils', () => {
   describe('capitalizeFirst', () => {
-    it('should capitalize the first letter of a word', () => {
-      const cases = [
-        ['hello', 'Hello'],
-        ['world', 'World'],
-        ['test', 'Test'],
-      ];
-      cases.forEach(([input, expected]) => {
-        expect(capitalizeFirst(input)).toBe(expected);
-      });
-    });
+    const cases: Array<[string, string, string]> = [
+      ['basic lowercase', 'hello', 'Hello'],
+      ['basic lowercase 2', 'world', 'World'],
+      ['already capitalized', 'Hello', 'Hello'],
+      ['all caps', 'WORLD', 'World'],
+      ['empty string', '', ''],
+      ['single char lowercase', 'a', 'A'],
+      ['single char uppercase', 'Z', 'Z'],
+      ['special char josé', 'josé', 'José'],
+      ['special char maría', 'maría', 'María'],
+      ['mixed case 1', 'hELLo', 'Hello'],
+      ['mixed case 2', 'wOrLd', 'World'],
+    ];
 
-    it('should handle already capitalized words', () => {
-      const cases = [
-        ['Hello', 'Hello'],
-        ['WORLD', 'World'],
-      ];
-      cases.forEach(([input, expected]) => {
-        expect(capitalizeFirst(input)).toBe(expected);
-      });
-    });
-
-    it('should handle empty strings', () => {
-      expect(capitalizeFirst('')).toBe('');
-    });
-
-    it('should handle single character strings', () => {
-      const cases = [
-        ['a', 'A'],
-        ['Z', 'Z'],
-      ];
-      cases.forEach(([input, expected]) => {
-        expect(capitalizeFirst(input)).toBe(expected);
-      });
-    });
-
-    it('should handle special characters', () => {
-      const cases = [
-        ['josé', 'José'],
-        ['maría', 'María'],
-      ];
-      cases.forEach(([input, expected]) => {
-        expect(capitalizeFirst(input)).toBe(expected);
-      });
-    });
-
-    it('should handle mixed case properly', () => {
-      const cases = [
-        ['hELLo', 'Hello'],
-        ['wOrLd', 'World'],
-      ];
-      cases.forEach(([input, expected]) => {
-        expect(capitalizeFirst(input)).toBe(expected);
-      });
+    it.each(cases)('%s: %s → %s', (_desc, input, expected) => {
+      expect(capitalizeFirst(input)).toBe(expected);
     });
   });
 
   describe('normalizeSpaces', () => {
-    it('should replace multiple spaces with single space', () => {
-      const cases = [
-        ['hello    world', 'hello world'],
-        ['test   multiple    spaces', 'test multiple spaces'],
-      ];
-      cases.forEach(([input, expected]) => {
-        expect(normalizeSpaces(input)).toBe(expected);
-      });
-    });
+    const cases: Array<[string, string, string]> = [
+      ['multiple spaces', 'hello    world', 'hello world'],
+      ['multiple spaces 2', 'test   multiple    spaces', 'test multiple spaces'],
+      ['tabs', 'hello\t\tworld', 'hello world'],
+      ['newlines', 'test\n\nlines', 'test lines'],
+      ['mixed whitespace', 'mixed\t \n spaces', 'mixed spaces'],
+      ['single spaces', 'hello world', 'hello world'],
+      ['normal spacing', 'normal spacing', 'normal spacing'],
+      ['empty string', '', ''],
+    ];
 
-    it('should handle tabs and newlines', () => {
-      const cases = [
-        ['hello\t\tworld', 'hello world'],
-        ['test\n\nlines', 'test lines'],
-        ['mixed\t \n spaces', 'mixed spaces'],
-      ];
-      cases.forEach(([input, expected]) => {
-        expect(normalizeSpaces(input)).toBe(expected);
-      });
-    });
-
-    it('should handle single spaces correctly', () => {
-      const cases = [
-        ['hello world', 'hello world'],
-        ['normal spacing', 'normal spacing'],
-      ];
-      cases.forEach(([input, expected]) => {
-        expect(normalizeSpaces(input)).toBe(expected);
-      });
-    });
-
-    it('should handle empty strings', () => {
-      expect(normalizeSpaces('')).toBe('');
+    it.each(cases)('%s: %s → %s', (_desc, input, expected) => {
+      expect(normalizeSpaces(input)).toBe(expected);
     });
   });
 
   describe('preserveSpaces', () => {
-    it('should extract leading spaces correctly', () => {
-      const result = preserveSpaces('  hello world');
-      expect(result).toEqual({
-        leading: '  ',
-        content: 'hello world',
-        trailing: '',
-      });
-    });
+    const cases: Array<[string, string, { leading: string; trailing: string; content: string }]> = [
+      ['leading spaces', '  hello world', { leading: '  ', content: 'hello world', trailing: '' }],
+      ['trailing spaces', 'hello world  ', { leading: '', content: 'hello world', trailing: '  ' }],
+      [
+        'both leading and trailing',
+        '  hello world  ',
+        { leading: '  ', content: 'hello world', trailing: '  ' },
+      ],
+      ['no extra spaces', 'hello', { leading: '', content: 'hello', trailing: '' }],
+      ['empty string', '', { leading: '', content: '', trailing: '' }],
+    ];
 
-    it('should extract trailing spaces correctly', () => {
-      const result = preserveSpaces('hello world  ');
-      expect(result).toEqual({
-        leading: '',
-        content: 'hello world',
-        trailing: '  ',
-      });
-    });
-
-    it('should extract both leading and trailing spaces', () => {
-      const result = preserveSpaces('  hello world  ');
-      expect(result).toEqual({
-        leading: '  ',
-        content: 'hello world',
-        trailing: '  ',
-      });
-    });
-
-    it('should handle strings with no extra spaces', () => {
-      const result = preserveSpaces('hello world');
-      expect(result).toEqual({
-        leading: '',
-        content: 'hello world',
-        trailing: '',
-      });
-    });
-
-    it('should handle empty strings', () => {
-      const result = preserveSpaces('');
-      expect(result).toEqual({
-        leading: '',
-        content: '',
-        trailing: '',
-      });
+    it.each(cases)('%s: %s', (_desc, input, expected) => {
+      expect(preserveSpaces(input)).toEqual(expected);
     });
   });
 });

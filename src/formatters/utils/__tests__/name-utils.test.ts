@@ -8,76 +8,40 @@ import {
 
 describe('name-utils', () => {
   describe('hasScottishPrefix', () => {
-    it('should identify Mc prefixes correctly', () => {
-      const cases = ['McDonald', 'McLeod', 'mccarthy'];
-      cases.forEach(input => {
-        expect(hasScottishPrefix(input)).toBe(true);
-      });
+    const trueCases = ['McDonald', 'McLeod', 'mccarthy', 'MacLeod', 'MacDonald', 'macarthur'];
+    const falseCases = ['Mc', 'Smith', 'Johnson', 'Martinez'];
+
+    it.each(trueCases.map(input => [input]))('should identify %s as Scottish', input => {
+      expect(hasScottishPrefix(input)).toBe(true);
     });
 
-    it('should identify Mac prefixes correctly', () => {
-      const cases = ['MacLeod', 'MacDonald', 'macarthur'];
-      cases.forEach(input => {
-        expect(hasScottishPrefix(input)).toBe(true);
-      });
+    it.each(falseCases.map(input => [input]))('should reject %s as non-Scottish', input => {
+      expect(hasScottishPrefix(input)).toBe(false);
     });
 
-    it('should reject short words with prefix', () => {
-      expect(hasScottishPrefix('Mc')).toBe(false);
-      expect(hasScottishPrefix('Mac')).toBe(true); // Mac has 3 characters, so it passes the > 2 check
-    });
-
-    it('should reject words without Scottish prefixes', () => {
-      const cases = ['Smith', 'Johnson', 'Martinez'];
-      cases.forEach(input => {
-        expect(hasScottishPrefix(input)).toBe(false);
-      });
+    it('should allow Mac (3 chars)', () => {
+      expect(hasScottishPrefix('Mac')).toBe(true);
     });
   });
 
   describe('formatScottishName', () => {
-    it('should format Mc names correctly', () => {
-      const cases = [
-        ['mcdonald', 'McDonald'],
-        ['MCDONALD', 'McDonald'],
-        ['McLeod', 'McLeod'],
-        ['mccarthy', 'McCarthy'],
-      ];
-      cases.forEach(([input, expected]) => {
-        expect(formatScottishName(input)).toBe(expected);
-      });
-    });
+    const cases: Array<[string, string, string]> = [
+      ['Mc lowercase', 'mcdonald', 'McDonald'],
+      ['Mc caps', 'MCDONALD', 'McDonald'],
+      ['McLeod', 'McLeod', 'McLeod'],
+      ['Mc mixed', 'mccarthy', 'McCarthy'],
+      ['Mac lowercase', 'macleod', 'MacLeod'],
+      ['Mac caps', 'MACLEOD', 'MacLeod'],
+      ['MacDonald', 'MacDonald', 'MacDonald'],
+      ['Mac mixed', 'macarthur', 'MacArthur'],
+      ['Mc weird case', 'mCdOnAlD', 'McDonald'],
+      ['Mac weird case', 'mAcLeOd', 'MacLeod'],
+      ['Non-Scottish 1', 'smith', 'Smith'],
+      ['Non-Scottish 2', 'JOHNSON', 'Johnson'],
+    ];
 
-    it('should format Mac names correctly', () => {
-      const cases = [
-        ['macleod', 'MacLeod'],
-        ['MACLEOD', 'MacLeod'],
-        ['MacDonald', 'MacDonald'],
-        ['macarthur', 'MacArthur'],
-      ];
-      cases.forEach(([input, expected]) => {
-        expect(formatScottishName(input)).toBe(expected);
-      });
-    });
-
-    it('should handle mixed case input', () => {
-      const cases = [
-        ['mCdOnAlD', 'McDonald'],
-        ['mAcLeOd', 'MacLeod'],
-      ];
-      cases.forEach(([input, expected]) => {
-        expect(formatScottishName(input)).toBe(expected);
-      });
-    });
-
-    it('should fallback to regular capitalization for non-Scottish names', () => {
-      const cases = [
-        ['smith', 'Smith'],
-        ['JOHNSON', 'Johnson'],
-      ];
-      cases.forEach(([input, expected]) => {
-        expect(formatScottishName(input)).toBe(expected);
-      });
+    it.each(cases)('%s: %s → %s', (_desc, input, expected) => {
+      expect(formatScottishName(input)).toBe(expected);
     });
   });
 
@@ -88,49 +52,33 @@ describe('name-utils', () => {
     });
 
     it('should require word to not be at the end', () => {
-      expect(hasWelshPatronymic('ap', 1, 2)).toBe(false); // Last word
-      expect(hasWelshPatronymic('ab', 2, 3)).toBe(false); // Last word
+      expect(hasWelshPatronymic('ap', 1, 2)).toBe(false);
+      expect(hasWelshPatronymic('ab', 2, 3)).toBe(false);
     });
 
-    it('should handle case insensitive matching', () => {
-      const cases = ['AP', 'Ab'];
-      cases.forEach(input => {
+    const caseSensitiveCases = ['AP', 'Ab'];
+    it.each(caseSensitiveCases.map(input => [input]))(
+      'should handle %s case insensitive',
+      input => {
         expect(hasWelshPatronymic(input, 0, 2)).toBe(true);
-      });
-    });
+      }
+    );
   });
 
   describe('formatWelshPatronymic', () => {
-    it('should format Welsh patronymics in lowercase', () => {
-      const cases = [
-        ['AP', 'ap'],
-        ['Ab', 'ab'],
-        ['FERCH', 'ferch'],
-      ];
-      cases.forEach(([input, expected]) => {
-        expect(formatWelshPatronymic(input)).toBe(expected);
-      });
-    });
+    const cases: Array<[string, string, string]> = [
+      ['Patronymic AP', 'AP', 'ap'],
+      ['Patronymic Ab', 'Ab', 'ab'],
+      ['Patronymic FERCH', 'FERCH', 'ferch'],
+      ['Non-patronymic david', 'david', 'David'],
+      ['Non-patronymic RHYS', 'RHYS', 'Rhys'],
+      ['Non-patronymic owen', 'owen', 'Owen'],
+      ['Mixed case aPpRhYs', 'aPpRhYs', 'Apprhys'],
+      ['Mixed case dAvId', 'dAvId', 'David'],
+    ];
 
-    it('should capitalize non-patronymic words', () => {
-      const cases = [
-        ['david', 'David'],
-        ['RHYS', 'Rhys'],
-        ['owen', 'Owen'],
-      ];
-      cases.forEach(([input, expected]) => {
-        expect(formatWelshPatronymic(input)).toBe(expected);
-      });
-    });
-
-    it('should handle mixed case input', () => {
-      const cases = [
-        ['aPpRhYs', 'Apprhys'], // Not a patronymic
-        ['dAvId', 'David'],
-      ];
-      cases.forEach(([input, expected]) => {
-        expect(formatWelshPatronymic(input)).toBe(expected);
-      });
+    it.each(cases)('%s: %s → %s', (_desc, input, expected) => {
+      expect(formatWelshPatronymic(input)).toBe(expected);
     });
   });
 });
