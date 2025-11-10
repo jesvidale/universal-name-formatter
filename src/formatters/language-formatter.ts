@@ -24,12 +24,12 @@ export function formatWithLocaleRules(
   // Preserve spaces handling using RegExp.exec()
   const leadingMatch = /^\s*/.exec(name);
   const trailingMatch = /\s*$/.exec(name);
-  
+
   let leadingSpaces = '';
   if (!trim && leadingMatch) {
     leadingSpaces = leadingMatch[0];
   }
-  
+
   let trailingSpaces = '';
   if (!trim && trailingMatch) {
     trailingSpaces = trailingMatch[0];
