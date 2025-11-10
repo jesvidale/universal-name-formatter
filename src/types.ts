@@ -1,7 +1,6 @@
 /**
  * Universal Name Formatter - Type Definitions
  *
- * Copyright (c) 2025 Jesus Vidal Alejandre (jesvidale)
  * Licensed under the MIT License
  *
  * Type definitions for the Name Formatter utility
