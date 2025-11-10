@@ -4,65 +4,103 @@ import { formatName } from '../index';
 describe('Locale Integration', () => {
   describe('French locale (fr)', () => {
     it('should handle French apostrophes correctly', () => {
-      expect(formatName("marie d'aubigny", { locale: 'fr' })).toBe("Marie d'aubigny");
-      expect(formatName("charles d'artagnan", { locale: 'fr' })).toBe("Charles d'artagnan");
-      expect(formatName("jean d'alembert", { locale: 'fr' })).toBe("Jean d'alembert");
+      const cases = [
+        ["marie d'aubigny", "Marie d'aubigny"],
+        ["charles d'artagnan", "Charles d'artagnan"],
+        ["jean d'alembert", "Jean d'alembert"],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(formatName(input, { locale: 'fr' })).toBe(expected);
+      });
     });
 
     it('should handle mixed nationalities with French locale', () => {
-      expect(formatName("giovanni d'amico", { locale: 'fr' })).toBe("Giovanni d'amico");
-      expect(formatName("marco d'angelo", { locale: 'fr' })).toBe("Marco d'angelo");
-      expect(formatName("patrick o'malley", { locale: 'fr' })).toBe("Patrick O'Malley");
+      const cases = [
+        ["giovanni d'amico", "Giovanni d'amico"],
+        ["marco d'angelo", "Marco d'angelo"],
+        ["patrick o'malley", "Patrick O'Malley"],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(formatName(input, { locale: 'fr' })).toBe(expected);
+      });
     });
   });
 
   describe('Italian locale (it)', () => {
     it('should handle Italian apostrophes correctly', () => {
-      expect(formatName("giovanni d'amico", { locale: 'it' })).toBe("Giovanni D'Amico");
-      expect(formatName("marco d'alessandro", { locale: 'it' })).toBe("Marco D'Alessandro");
-      expect(formatName("giulia d'antonio", { locale: 'it' })).toBe("Giulia D'Antonio");
+      const cases = [
+        ["giovanni d'amico", "Giovanni D'Amico"],
+        ["marco d'alessandro", "Marco D'Alessandro"],
+        ["giulia d'antonio", "Giulia D'Antonio"],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(formatName(input, { locale: 'it' })).toBe(expected);
+      });
     });
 
     it('should handle mixed nationalities with Italian locale', () => {
-      expect(formatName("marie d'aubigny", { locale: 'it' })).toBe("Marie D'Aubigny");
-      expect(formatName("charles d'artagnan", { locale: 'it' })).toBe("Charles D'Artagnan");
+      const cases = [
+        ["marie d'aubigny", "Marie D'Aubigny"],
+        ["charles d'artagnan", "Charles D'Artagnan"],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(formatName(input, { locale: 'it' })).toBe(expected);
+      });
     });
   });
 
   describe('Spanish locale (es)', () => {
     it('should handle Spanish names with various prepositions', () => {
-      expect(formatName('maría de la cruz', { locale: 'es' })).toBe('María de la Cruz');
-      expect(formatName('josé maría de los santos', { locale: 'es' })).toBe(
-        'José María de los Santos'
-      );
-      expect(formatName('ana del carmen', { locale: 'es' })).toBe('Ana del Carmen');
+      const cases = [
+        ['maría de la cruz', 'María de la Cruz'],
+        ['josé maría de los santos', 'José María de los Santos'],
+        ['ana del carmen', 'Ana del Carmen'],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(formatName(input, { locale: 'es' })).toBe(expected);
+      });
     });
 
     it('should handle mixed nationalities with Spanish locale', () => {
-      expect(formatName("giovanni d'amico", { locale: 'es' })).toBe("Giovanni D'Amico");
-      expect(formatName("francesco d'angelo", { locale: 'es' })).toBe("Francesco D'Angelo");
-      expect(formatName("marie d'aubigny", { locale: 'es' })).toBe("Marie D'Aubigny");
-      expect(formatName("charles d'artagnan", { locale: 'es' })).toBe("Charles D'Artagnan");
+      const cases = [
+        ["giovanni d'amico", "Giovanni D'Amico"],
+        ["francesco d'angelo", "Francesco D'Angelo"],
+        ["marie d'aubigny", "Marie D'Aubigny"],
+        ["charles d'artagnan", "Charles D'Artagnan"],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(formatName(input, { locale: 'es' })).toBe(expected);
+      });
     });
   });
 
   describe('Welsh locale (cy)', () => {
     it('should handle Welsh patronymics correctly', () => {
-      expect(formatName('sian ab owain', { locale: 'cy' })).toBe('Sian ab Owain');
-      expect(formatName('bethan ferch morgan', { locale: 'cy' })).toBe('Bethan ferch Morgan');
-      expect(formatName('dafydd ap llewelyn', { locale: 'cy' })).toBe('Dafydd ap Llewelyn');
+      const cases = [
+        ['sian ab owain', 'Sian ab Owain'],
+        ['bethan ferch morgan', 'Bethan ferch Morgan'],
+        ['dafydd ap llewelyn', 'Dafydd ap Llewelyn'],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(formatName(input, { locale: 'cy' })).toBe(expected);
+      });
     });
   });
 
   describe('Multiple languages without locale specified', () => {
     it('should format names correctly regardless of origin', () => {
-      expect(formatName('maría de la cruz')).toBe('María De La Cruz');
-      expect(formatName('jean-claude de la fontaine')).toBe('Jean-Claude De La Fontaine');
-      expect(formatName('hans von neumann')).toBe('Hans Von Neumann');
-      expect(formatName('jan van der waals')).toBe('Jan Van Der Waals');
-      expect(formatName('leonardo da vinci')).toBe('Leonardo Da Vinci');
-      expect(formatName("patrick o'malley")).toBe("Patrick O'Malley");
-      expect(formatName('donald mcdonald')).toBe('Donald McDonald');
+      const cases = [
+        ['maría de la cruz', 'María De La Cruz'],
+        ['jean-claude de la fontaine', 'Jean-Claude De La Fontaine'],
+        ['hans von neumann', 'Hans Von Neumann'],
+        ['jan van der waals', 'Jan Van Der Waals'],
+        ['leonardo da vinci', 'Leonardo Da Vinci'],
+        ["patrick o'malley", "Patrick O'Malley"],
+        ['donald mcdonald', 'Donald McDonald'],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(formatName(input)).toBe(expected);
+      });
     });
   });
 });

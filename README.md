@@ -1,8 +1,9 @@
 # Universal Name Formatter
 
-[![CI](https://github.com/YOUR_USERNAME/universal-name-formatter/workflows/CI/badge.svg)](https://github.com/YOUR_USERNAME/universal-name-formatter/actions)
+[![CI](https://github.com/jesvidale/universal-name-formatter/workflows/CI/badge.svg)](https://github.com/jesvidale/universal-name-formatter/actions)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=jesvidale_universal-name-formatter&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=jesvidale_universal-name-formatter)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=jesvidale_universal-name-formatter&metric=coverage)](https://sonarcloud.io/summary/new_code?id=jesvidale_universal-name-formatter)
 [![npm version](https://img.shields.io/npm/v/universal-name-formatter.svg)](https://www.npmjs.com/package/universal-name-formatter)
-[![Coverage](https://img.shields.io/codecov/c/github/YOUR_USERNAME/universal-name-formatter)](https://codecov.io/gh/YOUR_USERNAME/universal-name-formatter)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A powerful, locale-aware name formatting utility that handles international names with proper linguistic rules.

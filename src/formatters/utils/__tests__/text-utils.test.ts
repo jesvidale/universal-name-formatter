@@ -4,14 +4,24 @@ import { capitalizeFirst, normalizeSpaces, preserveSpaces } from '../text-utils'
 describe('text-utils', () => {
   describe('capitalizeFirst', () => {
     it('should capitalize the first letter of a word', () => {
-      expect(capitalizeFirst('hello')).toBe('Hello');
-      expect(capitalizeFirst('world')).toBe('World');
-      expect(capitalizeFirst('test')).toBe('Test');
+      const cases = [
+        ['hello', 'Hello'],
+        ['world', 'World'],
+        ['test', 'Test'],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(capitalizeFirst(input)).toBe(expected);
+      });
     });
 
     it('should handle already capitalized words', () => {
-      expect(capitalizeFirst('Hello')).toBe('Hello');
-      expect(capitalizeFirst('WORLD')).toBe('World');
+      const cases = [
+        ['Hello', 'Hello'],
+        ['WORLD', 'World'],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(capitalizeFirst(input)).toBe(expected);
+      });
     });
 
     it('should handle empty strings', () => {
@@ -19,36 +29,66 @@ describe('text-utils', () => {
     });
 
     it('should handle single character strings', () => {
-      expect(capitalizeFirst('a')).toBe('A');
-      expect(capitalizeFirst('Z')).toBe('Z');
+      const cases = [
+        ['a', 'A'],
+        ['Z', 'Z'],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(capitalizeFirst(input)).toBe(expected);
+      });
     });
 
     it('should handle special characters', () => {
-      expect(capitalizeFirst('josé')).toBe('José');
-      expect(capitalizeFirst('maría')).toBe('María');
+      const cases = [
+        ['josé', 'José'],
+        ['maría', 'María'],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(capitalizeFirst(input)).toBe(expected);
+      });
     });
 
     it('should handle mixed case properly', () => {
-      expect(capitalizeFirst('hELLo')).toBe('Hello');
-      expect(capitalizeFirst('wOrLd')).toBe('World');
+      const cases = [
+        ['hELLo', 'Hello'],
+        ['wOrLd', 'World'],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(capitalizeFirst(input)).toBe(expected);
+      });
     });
   });
 
   describe('normalizeSpaces', () => {
     it('should replace multiple spaces with single space', () => {
-      expect(normalizeSpaces('hello    world')).toBe('hello world');
-      expect(normalizeSpaces('test   multiple    spaces')).toBe('test multiple spaces');
+      const cases = [
+        ['hello    world', 'hello world'],
+        ['test   multiple    spaces', 'test multiple spaces'],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(normalizeSpaces(input)).toBe(expected);
+      });
     });
 
     it('should handle tabs and newlines', () => {
-      expect(normalizeSpaces('hello\t\tworld')).toBe('hello world');
-      expect(normalizeSpaces('test\n\nlines')).toBe('test lines');
-      expect(normalizeSpaces('mixed\t \n spaces')).toBe('mixed spaces');
+      const cases = [
+        ['hello\t\tworld', 'hello world'],
+        ['test\n\nlines', 'test lines'],
+        ['mixed\t \n spaces', 'mixed spaces'],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(normalizeSpaces(input)).toBe(expected);
+      });
     });
 
     it('should handle single spaces correctly', () => {
-      expect(normalizeSpaces('hello world')).toBe('hello world');
-      expect(normalizeSpaces('normal spacing')).toBe('normal spacing');
+      const cases = [
+        ['hello world', 'hello world'],
+        ['normal spacing', 'normal spacing'],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(normalizeSpaces(input)).toBe(expected);
+      });
     });
 
     it('should handle empty strings', () => {
@@ -59,37 +99,47 @@ describe('text-utils', () => {
   describe('preserveSpaces', () => {
     it('should extract leading spaces correctly', () => {
       const result = preserveSpaces('  hello world');
-      expect(result.leading).toBe('  ');
-      expect(result.content).toBe('hello world');
-      expect(result.trailing).toBe('');
+      expect(result).toEqual({
+        leading: '  ',
+        content: 'hello world',
+        trailing: '',
+      });
     });
 
     it('should extract trailing spaces correctly', () => {
       const result = preserveSpaces('hello world  ');
-      expect(result.leading).toBe('');
-      expect(result.content).toBe('hello world');
-      expect(result.trailing).toBe('  ');
+      expect(result).toEqual({
+        leading: '',
+        content: 'hello world',
+        trailing: '  ',
+      });
     });
 
     it('should extract both leading and trailing spaces', () => {
       const result = preserveSpaces('  hello world  ');
-      expect(result.leading).toBe('  ');
-      expect(result.content).toBe('hello world');
-      expect(result.trailing).toBe('  ');
+      expect(result).toEqual({
+        leading: '  ',
+        content: 'hello world',
+        trailing: '  ',
+      });
     });
 
     it('should handle strings with no extra spaces', () => {
       const result = preserveSpaces('hello world');
-      expect(result.leading).toBe('');
-      expect(result.content).toBe('hello world');
-      expect(result.trailing).toBe('');
+      expect(result).toEqual({
+        leading: '',
+        content: 'hello world',
+        trailing: '',
+      });
     });
 
     it('should handle empty strings', () => {
       const result = preserveSpaces('');
-      expect(result.leading).toBe('');
-      expect(result.content).toBe('');
-      expect(result.trailing).toBe('');
+      expect(result).toEqual({
+        leading: '',
+        content: '',
+        trailing: '',
+      });
     });
   });
 });

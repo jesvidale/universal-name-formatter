@@ -5,49 +5,84 @@ import { SupportedLocale } from '../../config/types';
 describe('Core Formatter', () => {
   describe('Basic name formatting', () => {
     it('should format English names correctly', () => {
-      expect(formatName('john f. kennedy')).toBe('John F. Kennedy');
-      expect(formatName('elizabeth of york')).toBe('Elizabeth Of York');
-      expect(formatName('william and mary')).toBe('William And Mary');
+      const cases = [
+        ['john f. kennedy', 'John F. Kennedy'],
+        ['elizabeth of york', 'Elizabeth Of York'],
+        ['william and mary', 'William And Mary'],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(formatName(input)).toBe(expected);
+      });
     });
 
     it('should format names with different European origins', () => {
-      expect(formatName('hans von neumann')).toBe('Hans Von Neumann');
-      expect(formatName('ludwig van beethoven')).toBe('Ludwig Van Beethoven');
-      expect(formatName('jan van der waals')).toBe('Jan Van Der Waals');
-      expect(formatName('leonardo da vinci')).toBe('Leonardo Da Vinci');
+      const cases = [
+        ['hans von neumann', 'Hans Von Neumann'],
+        ['ludwig van beethoven', 'Ludwig Van Beethoven'],
+        ['jan van der waals', 'Jan Van Der Waals'],
+        ['leonardo da vinci', 'Leonardo Da Vinci'],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(formatName(input)).toBe(expected);
+      });
     });
 
     it('should format Eastern European names', () => {
-      expect(formatName('václav ze zlína')).toBe('Václav Ze Zlína');
-      expect(formatName('jana z praha')).toBe('Jana Z Praha');
-      expect(formatName('ana din brasov')).toBe('Ana Din Brasov');
-      expect(formatName('ion către bucuresti')).toBe('Ion Către Bucuresti');
+      const cases = [
+        ['václav ze zlína', 'Václav Ze Zlína'],
+        ['jana z praha', 'Jana Z Praha'],
+        ['ana din brasov', 'Ana Din Brasov'],
+        ['ion către bucuresti', 'Ion Către Bucuresti'],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(formatName(input)).toBe(expected);
+      });
     });
 
     it('should format Polish names correctly', () => {
-      expect(formatName('jan z warszawy')).toBe('Jan Z Warszawy');
-      expect(formatName('maria z krakowa')).toBe('Maria Z Krakowa');
-      expect(formatName('piotr w krakow')).toBe('Piotr W Krakow');
+      const cases = [
+        ['jan z warszawy', 'Jan Z Warszawy'],
+        ['maria z krakowa', 'Maria Z Krakowa'],
+        ['piotr w krakow', 'Piotr W Krakow'],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(formatName(input)).toBe(expected);
+      });
     });
   });
 
   describe('Special name patterns', () => {
     it('should format Scottish/Irish names correctly', () => {
-      expect(formatName('donald mcdonald')).toBe('Donald McDonald');
-      expect(formatName('MCDONALD')).toBe('McDonald');
-      expect(formatName('macleod')).toBe('MacLeod');
-      expect(formatName('MACARTHUR')).toBe('MacArthur');
+      const cases = [
+        ['donald mcdonald', 'Donald McDonald'],
+        ['MCDONALD', 'McDonald'],
+        ['macleod', 'MacLeod'],
+        ['MACARTHUR', 'MacArthur'],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(formatName(input)).toBe(expected);
+      });
     });
 
     it('should format hyphenated names correctly', () => {
-      expect(formatName('jean-claude de la fontaine')).toBe('Jean-Claude De La Fontaine');
-      expect(formatName('anne-marie martin')).toBe('Anne-Marie Martin');
+      const cases = [
+        ['jean-claude de la fontaine', 'Jean-Claude De La Fontaine'],
+        ['anne-marie martin', 'Anne-Marie Martin'],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(formatName(input)).toBe(expected);
+      });
     });
 
     it('should format names with initials correctly', () => {
-      expect(formatName('j.r.r. tolkien')).toBe('J.R.R. Tolkien');
-      expect(formatName('a.b.c. smith')).toBe('A.B.C. Smith');
-      expect(formatName('john f. kennedy')).toBe('John F. Kennedy');
+      const cases = [
+        ['j.r.r. tolkien', 'J.R.R. Tolkien'],
+        ['a.b.c. smith', 'A.B.C. Smith'],
+        ['john f. kennedy', 'John F. Kennedy'],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(formatName(input)).toBe(expected);
+      });
     });
   });
 
@@ -65,31 +100,47 @@ describe('Core Formatter', () => {
     });
 
     it('should handle locale parameter', () => {
-      expect(formatName("marie d'aubigny", { locale: SupportedLocale.FRENCH })).toBe(
-        "Marie d'aubigny"
-      );
-      expect(formatName("giovanni d'amico", { locale: SupportedLocale.ITALIAN })).toBe(
-        "Giovanni D'Amico"
-      );
+      const cases: Array<[string, { locale: SupportedLocale }, string]> = [
+        ["marie d'aubigny", { locale: SupportedLocale.FRENCH }, "Marie d'aubigny"],
+        ["giovanni d'amico", { locale: SupportedLocale.ITALIAN }, "Giovanni D'Amico"],
+      ];
+      cases.forEach(([input, options, expected]) => {
+        expect(formatName(input, options)).toBe(expected);
+      });
     });
   });
 
   describe('Edge cases', () => {
     it('should handle edge cases', () => {
-      expect(formatName('')).toBe('');
-      expect(formatName(' ')).toBe('');
-      expect(formatName('   ')).toBe('');
+      const cases = [
+        ['', ''],
+        [' ', ''],
+        ['   ', ''],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(formatName(input)).toBe(expected);
+      });
     });
 
     it('should handle single words', () => {
-      expect(formatName('josé')).toBe('José');
-      expect(formatName('MARIA')).toBe('Maria');
-      expect(formatName('de')).toBe('De'); // Single word should be capitalized
+      const cases = [
+        ['josé', 'José'],
+        ['MARIA', 'Maria'],
+        ['de', 'De'], // Single word should be capitalized
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(formatName(input)).toBe(expected);
+      });
     });
 
     it('should handle complex capitalization', () => {
-      expect(formatName('JOHN DOE')).toBe('John Doe');
-      expect(formatName('mary jane smith')).toBe('Mary Jane Smith');
+      const cases = [
+        ['JOHN DOE', 'John Doe'],
+        ['mary jane smith', 'Mary Jane Smith'],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(formatName(input)).toBe(expected);
+      });
     });
   });
 });

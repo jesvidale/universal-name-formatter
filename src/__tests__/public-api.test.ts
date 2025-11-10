@@ -4,15 +4,25 @@ import { formatName } from '../index';
 describe('Public API', () => {
   describe('formatName', () => {
     it('should format basic names correctly', () => {
-      expect(formatName('john f. kennedy')).toBe('John F. Kennedy');
-      expect(formatName('mary smith ph.d.')).toBe('Mary Smith Ph.D.');
-      expect(formatName('robert jones jr.')).toBe('Robert Jones Jr.');
+      const cases = [
+        ['john f. kennedy', 'John F. Kennedy'],
+        ['mary smith ph.d.', 'Mary Smith Ph.D.'],
+        ['robert jones jr.', 'Robert Jones Jr.'],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(formatName(input)).toBe(expected);
+      });
     });
 
     it('should handle empty and invalid inputs', () => {
-      expect(formatName('')).toBe('');
-      expect(formatName('   ')).toBe('');
-      expect(formatName('josé')).toBe('José');
+      const cases = [
+        ['', ''],
+        ['   ', ''],
+        ['josé', 'José'],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(formatName(input)).toBe(expected);
+      });
     });
 
     it('should respect formatting options', () => {
@@ -21,14 +31,24 @@ describe('Public API', () => {
     });
 
     it('should normalize spaces by default', () => {
-      expect(formatName('josé   maría   de    la    cruz')).toBe('José María De La Cruz');
-      expect(formatName('  maría  del  carmen  ')).toBe('María Del Carmen');
+      const cases = [
+        ['josé   maría   de    la    cruz', 'José María De La Cruz'],
+        ['  maría  del  carmen  ', 'María Del Carmen'],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(formatName(input)).toBe(expected);
+      });
     });
 
     it('should handle locale-specific formatting', () => {
-      expect(formatName("marie d'aubigny", { locale: 'fr' })).toBe("Marie d'aubigny");
-      expect(formatName("giovanni d'amico", { locale: 'it' })).toBe("Giovanni D'Amico");
-      expect(formatName("patrick o'malley", { locale: 'ga' })).toBe("Patrick O'Malley");
+      const cases: Array<[string, { locale: string }, string]> = [
+        ["marie d'aubigny", { locale: 'fr' }, "Marie d'aubigny"],
+        ["giovanni d'amico", { locale: 'it' }, "Giovanni D'Amico"],
+        ["patrick o'malley", { locale: 'ga' }, "Patrick O'Malley"],
+      ];
+      cases.forEach(([input, options, expected]) => {
+        expect(formatName(input, options)).toBe(expected);
+      });
     });
   });
 });

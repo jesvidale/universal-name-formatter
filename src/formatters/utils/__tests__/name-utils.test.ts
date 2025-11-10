@@ -9,15 +9,17 @@ import {
 describe('name-utils', () => {
   describe('hasScottishPrefix', () => {
     it('should identify Mc prefixes correctly', () => {
-      expect(hasScottishPrefix('McDonald')).toBe(true);
-      expect(hasScottishPrefix('McLeod')).toBe(true);
-      expect(hasScottishPrefix('mccarthy')).toBe(true);
+      const cases = ['McDonald', 'McLeod', 'mccarthy'];
+      cases.forEach(input => {
+        expect(hasScottishPrefix(input)).toBe(true);
+      });
     });
 
     it('should identify Mac prefixes correctly', () => {
-      expect(hasScottishPrefix('MacLeod')).toBe(true);
-      expect(hasScottishPrefix('MacDonald')).toBe(true);
-      expect(hasScottishPrefix('macarthur')).toBe(true);
+      const cases = ['MacLeod', 'MacDonald', 'macarthur'];
+      cases.forEach(input => {
+        expect(hasScottishPrefix(input)).toBe(true);
+      });
     });
 
     it('should reject short words with prefix', () => {
@@ -26,41 +28,61 @@ describe('name-utils', () => {
     });
 
     it('should reject words without Scottish prefixes', () => {
-      expect(hasScottishPrefix('Smith')).toBe(false);
-      expect(hasScottishPrefix('Johnson')).toBe(false);
-      expect(hasScottishPrefix('Martinez')).toBe(false);
+      const cases = ['Smith', 'Johnson', 'Martinez'];
+      cases.forEach(input => {
+        expect(hasScottishPrefix(input)).toBe(false);
+      });
     });
   });
 
   describe('formatScottishName', () => {
     it('should format Mc names correctly', () => {
-      expect(formatScottishName('mcdonald')).toBe('McDonald');
-      expect(formatScottishName('MCDONALD')).toBe('McDonald');
-      expect(formatScottishName('McLeod')).toBe('McLeod');
-      expect(formatScottishName('mccarthy')).toBe('McCarthy');
+      const cases = [
+        ['mcdonald', 'McDonald'],
+        ['MCDONALD', 'McDonald'],
+        ['McLeod', 'McLeod'],
+        ['mccarthy', 'McCarthy'],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(formatScottishName(input)).toBe(expected);
+      });
     });
 
     it('should format Mac names correctly', () => {
-      expect(formatScottishName('macleod')).toBe('MacLeod');
-      expect(formatScottishName('MACLEOD')).toBe('MacLeod');
-      expect(formatScottishName('MacDonald')).toBe('MacDonald');
-      expect(formatScottishName('macarthur')).toBe('MacArthur');
+      const cases = [
+        ['macleod', 'MacLeod'],
+        ['MACLEOD', 'MacLeod'],
+        ['MacDonald', 'MacDonald'],
+        ['macarthur', 'MacArthur'],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(formatScottishName(input)).toBe(expected);
+      });
     });
 
     it('should handle mixed case input', () => {
-      expect(formatScottishName('mCdOnAlD')).toBe('McDonald');
-      expect(formatScottishName('mAcLeOd')).toBe('MacLeod');
+      const cases = [
+        ['mCdOnAlD', 'McDonald'],
+        ['mAcLeOd', 'MacLeod'],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(formatScottishName(input)).toBe(expected);
+      });
     });
 
     it('should fallback to regular capitalization for non-Scottish names', () => {
-      expect(formatScottishName('smith')).toBe('Smith');
-      expect(formatScottishName('JOHNSON')).toBe('Johnson');
+      const cases = [
+        ['smith', 'Smith'],
+        ['JOHNSON', 'Johnson'],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(formatScottishName(input)).toBe(expected);
+      });
     });
   });
 
   describe('hasWelshPatronymic', () => {
     it('should identify Welsh patronymics correctly', () => {
-      // Now uses correct 'cy' locale
       expect(hasWelshPatronymic('ap', 0, 2)).toBe(true);
       expect(hasWelshPatronymic('ab', 1, 3)).toBe(true);
     });
@@ -71,29 +93,44 @@ describe('name-utils', () => {
     });
 
     it('should handle case insensitive matching', () => {
-      // Now works correctly with fixed locale
-      expect(hasWelshPatronymic('AP', 0, 2)).toBe(true);
-      expect(hasWelshPatronymic('Ab', 0, 2)).toBe(true);
+      const cases = ['AP', 'Ab'];
+      cases.forEach(input => {
+        expect(hasWelshPatronymic(input, 0, 2)).toBe(true);
+      });
     });
   });
 
   describe('formatWelshPatronymic', () => {
     it('should format Welsh patronymics in lowercase', () => {
-      // Now formats correctly with fixed locale
-      expect(formatWelshPatronymic('AP')).toBe('ap');
-      expect(formatWelshPatronymic('Ab')).toBe('ab');
-      expect(formatWelshPatronymic('FERCH')).toBe('ferch');
+      const cases = [
+        ['AP', 'ap'],
+        ['Ab', 'ab'],
+        ['FERCH', 'ferch'],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(formatWelshPatronymic(input)).toBe(expected);
+      });
     });
 
     it('should capitalize non-patronymic words', () => {
-      expect(formatWelshPatronymic('david')).toBe('David');
-      expect(formatWelshPatronymic('RHYS')).toBe('Rhys');
-      expect(formatWelshPatronymic('owen')).toBe('Owen');
+      const cases = [
+        ['david', 'David'],
+        ['RHYS', 'Rhys'],
+        ['owen', 'Owen'],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(formatWelshPatronymic(input)).toBe(expected);
+      });
     });
 
     it('should handle mixed case input', () => {
-      expect(formatWelshPatronymic('aPpRhYs')).toBe('Apprhys'); // Not a patronymic
-      expect(formatWelshPatronymic('dAvId')).toBe('David');
+      const cases = [
+        ['aPpRhYs', 'Apprhys'], // Not a patronymic
+        ['dAvId', 'David'],
+      ];
+      cases.forEach(([input, expected]) => {
+        expect(formatWelshPatronymic(input)).toBe(expected);
+      });
     });
   });
 });
