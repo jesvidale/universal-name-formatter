@@ -1,3 +1,11 @@
+## [1.0.1](https://github.com/jesvidale/universal-name-formatter/compare/v1.0.0...v1.0.1) (2025-11-10)
+
+
+### Bug Fixes
+
+* lint ([242def5](https://github.com/jesvidale/universal-name-formatter/commit/242def55bb1f4150e176afbe59648a938e72c830))
+* reduce code duplication and code smells ([459a24d](https://github.com/jesvidale/universal-name-formatter/commit/459a24d15145764dec26ea50de8b15866e57dbb4))
+
 # 1.0.0 (2025-11-10)
 
 

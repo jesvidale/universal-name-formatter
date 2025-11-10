@@ -1,6 +1,6 @@
 {
   "name": "universal-name-formatter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Universal name formatter with locale-specific support for proper name capitalization across languages",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
