@@ -1,7 +1,6 @@
 /**
  * Universal Name Formatter
  *
- * Copyright (c) 2025 Jesus Vidal Alejandre (jesvidale)
  * Licensed under the MIT License
  *
  * A powerful, locale-aware name formatting utility that handles
